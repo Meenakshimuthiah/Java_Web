@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+		<bean id="loginDao" class="com.edu.spring.dao.LoginDAO" ></bean>
+		<bean id="physicianDao" class="com.edu.spring.dao.PhysicianDAO"></bean>
+		<bean id="physicianValidator" class="com.edu.spring.validator.PhysicianValidator"></bean>
+		<bean id="patientDao" class="com.edu.spring.dao.PatientDAO"></bean>
+		<bean id="patientValidator" class="com.edu.spring.validator.PatientValidator"></bean>
+</beans>
