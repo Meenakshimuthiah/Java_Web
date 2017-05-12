@@ -23,7 +23,7 @@ import com.edu.spring.pojo.VitalHistory;
 public class ViewDetailsController {
 	@Autowired
 	PatientDAO patientDAO;
-	
+
 	@RequestMapping(value = "/patient/search_appointment", method = RequestMethod.POST)
 	public ModelAndView searchPatient(HttpServletRequest request) {
 		HttpSession session = request.getSession();
@@ -36,11 +36,11 @@ public class ViewDetailsController {
 		} catch (AdminException e) {
 			System.out.println("Exception: " + e.getMessage());
 			session.setAttribute("errorMessage", "Appointment Does not exists");
-			return new ModelAndView("error","error",null);
+			return new ModelAndView("error", "error", null);
 		}
-		
+
 	}
-	
+
 	@RequestMapping(value = "/patient/search_appointment", method = RequestMethod.GET)
 	public ModelAndView searchOldPatient(HttpServletRequest request) {
 		HttpSession session = request.getSession();
@@ -52,28 +52,54 @@ public class ViewDetailsController {
 		} catch (AdminException e) {
 			System.out.println("Exception: " + e.getMessage());
 			session.setAttribute("errorMessage", "Appointment Does not exists");
-			return new ModelAndView("error","error",null);
-		}	
-		
+			return new ModelAndView("error", "error", null);
+		}
+
 	}
-	
+
 	@RequestMapping(value = "/patient/view_apptdetails", method = RequestMethod.GET)
 	public ModelAndView addapptDetails(HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		Patient u = (Patient) session.getAttribute("user");
+		Patient u = (Patient) session.getAttribute("p");
 		String date = (String) session.getAttribute("date");
 		long query = u.getUId();
-		AppointmentDetails a = patientDAO.searchAppointment(query,date);
-		return new ModelAndView("view_apptdetails","a",a);
+		AppointmentDetails a = patientDAO.searchAppointment(query, date);
+		return new ModelAndView("view_apptdetails", "a", a);
 	}
-	
+
 	@RequestMapping(value = "/patient/view_vitals", method = RequestMethod.GET)
 	public ModelAndView viewVitals(HttpServletRequest request) {
 		List<VitalHistory> list = new ArrayList<VitalHistory>();
 		HttpSession session = request.getSession();
-		Patient u = (Patient) session.getAttribute("user");
+		Patient u = (Patient) session.getAttribute("p");
 		list = patientDAO.getVitals(u);
 		session.setAttribute("size", list.size());
-		return new ModelAndView("view_vitals","list",list);
+		return new ModelAndView("view_vitals", "list", list);
+	}
+	
+
+	@RequestMapping(value = "/patient/select_patient", method = RequestMethod.POST)
+	public String selectPatient(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		String id = request.getParameter("pList");
+		Patient p = patientDAO.getPatient(id);
+		session.setAttribute("p", p);
+		return "search_appt";
+	}
+	
+	@RequestMapping(value="/AppointmentCheck",method = RequestMethod.POST)
+	public void checkAppointment(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		String query = request.getParameter("date");
+		AppointmentDetails p;
+		try {
+			p = patientDAO.checkAppointment(query);
+			session.setAttribute("appointment", p);
+			
+		} catch (AdminException e) {
+			System.out.println("Exception: " + e.getMessage());
+			session.setAttribute("errorMessage", "Appointment Does not exists");
+			
+		}
 	}
 }

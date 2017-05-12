@@ -1,6 +1,8 @@
 package com.edu.spring.pojo;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -27,7 +29,7 @@ public class VitalHistory {
 	}
 
 	public VitalHistory(int height, int weight, int systolicBp, int diastolicBp, int choldl, int chohdl, int pulse,
-			double bmi, Patient patient,String date) {
+			double bmi, Patient patient, String date) {
 		super();
 		this.height = height;
 		this.weight = weight;

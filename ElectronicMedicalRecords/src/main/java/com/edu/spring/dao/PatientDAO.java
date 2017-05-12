@@ -36,24 +36,25 @@ public class PatientDAO extends DAO {
 		Query q = getSession().createQuery("from AppointmentDetails where appointmentDate = :date");
 		q.setString("date", query);
 		AppointmentDetails a = (AppointmentDetails) q.uniqueResult();
-		if(a==null){
-			throw new AdminException("Appointment does not exists",new Exception());
+		if (a == null) {
+			throw new AdminException("Appointment does not exists", new Exception());
 		}
 		Physician u = a.getPhysician();
-		
+
 		commit();
 		close();
 		return u;
 	}
-	
-	public AppointmentDetails searchAppointment(long query,String date) {
+
+	public AppointmentDetails searchAppointment(long query, String date) {
 		// TODO Auto-generated method stub
 		begin();
-		Query q = getSession().createQuery("from AppointmentDetails where patient_UId = :UId and appointmentDate = :date");
+		Query q = getSession()
+				.createQuery("from AppointmentDetails where patient_UId = :UId and appointmentDate = :date");
 		q.setLong("UId", query);
 		q.setString("date", date);
 		AppointmentDetails a = (AppointmentDetails) q.uniqueResult();
-		
+
 		commit();
 		close();
 		return a;
@@ -68,5 +69,25 @@ public class PatientDAO extends DAO {
 		commit();
 		close();
 		return list;
+	}
+
+	public Patient getPatient(String id) {
+		begin();
+		Query q = getSession().createQuery("from Patient where UId = :id");
+		q.setLong("id", Long.parseLong(id));
+		Patient p = (Patient) q.uniqueResult();
+		commit();
+		close();
+		return p;
+	}
+
+	public AppointmentDetails checkAppointment(String query) throws AdminException{
+		begin();
+		Query q = getSession().createQuery("from AppointmentDetails where appointmentDate = :date");
+		q.setString("date", query);
+		AppointmentDetails a = (AppointmentDetails) q.uniqueResult();
+		commit();
+		close();
+		return a;
 	}
 }

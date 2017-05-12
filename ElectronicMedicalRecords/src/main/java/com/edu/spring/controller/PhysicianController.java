@@ -49,7 +49,7 @@ public class PhysicianController {
 			return new ModelAndView("admin_home", "physician", physician);
 		}
 		try {
-			
+
 			Physician p = physicianDAO.registerPhysician(physician);
 			request.getSession().setAttribute("physician", p);
 			return new ModelAndView("add_success", "physician", p);

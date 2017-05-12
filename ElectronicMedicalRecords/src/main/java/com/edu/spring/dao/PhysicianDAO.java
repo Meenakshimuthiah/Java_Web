@@ -45,28 +45,32 @@ public class PhysicianDAO extends DAO {
 		close();
 		return u;
 	}
-	
-	public AppointmentDetails addApptDetails(AppointmentDetails aDetails) throws AdminException{
+
+	public AppointmentDetails addApptDetails(AppointmentDetails aDetails) throws AdminException {
 		begin();
 		
-			Query query = getSession().createQuery("from AppointmentDetails where appointmentDate = :date and patient_UId = :Id");
-			query.setString("date", aDetails.getAppointmentDate());
-			query.setLong("Id", aDetails.getPatient().getUId());
-			if(query.uniqueResult()!=null){
-				throw new AdminException("Appointment already exists",new Exception());
-			}else{
-				getSession().save(aDetails);
-			}
+		Query query = getSession()
+				.createQuery("from AppointmentDetails where appointmentDate = :date and patient_UId = :Id");
+		query.setString("date", aDetails.getAppointmentDate());
+		query.setLong("Id", aDetails.getPatient().getUId());
+		if (query.uniqueResult() != null) {
+			throw new AdminException("Appointment already exists", new Exception());
+		} else {
+			getSession().save(aDetails);
+		}
+		getSession().flush();
 		commit();
+		getSession().clear();
 		return aDetails;
-		
+
 	}
-	
-	public VitalHistory addVitals(VitalHistory vitalHistory){
+
+	public VitalHistory addVitals(VitalHistory vitalHistory) {
 		begin();
 		getSession().save(vitalHistory);
 		commit();
+		close();
 		return vitalHistory;
-		
+
 	}
 }

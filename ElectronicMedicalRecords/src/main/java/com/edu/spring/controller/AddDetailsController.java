@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.hibernate.classic.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,13 +40,13 @@ public class AddDetailsController {
 		session.setAttribute("patient", u);
 		return new ModelAndView("add_details", "patient", u);
 	}
-	
+
 	@RequestMapping(value = "/physician/add_details", method = RequestMethod.GET)
 	public ModelAndView addOldDetails(HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		Patient patient=(Patient) session.getAttribute("patient");
+		Patient patient = (Patient) session.getAttribute("patient");
 		String id = String.valueOf(patient.getUId());
-		Patient u = physicianDAO.getPatient(id);	
+		Patient u = physicianDAO.getPatient(id);
 		return new ModelAndView("add_details", "patient", u);
 	}
 
@@ -57,7 +56,7 @@ public class AddDetailsController {
 		Patient u = (Patient) session.getAttribute("patient");
 		return new ModelAndView("appt_details", "patient", u);
 	}
-	
+
 	@RequestMapping(value = "/physician/add_apptdetails", method = RequestMethod.POST)
 	public ModelAndView addnewapptDetails(HttpServletRequest request) {
 		HttpSession session = request.getSession();
@@ -75,18 +74,18 @@ public class AddDetailsController {
 		} catch (AdminException e) {
 			System.out.println("Exception: " + e.getMessage());
 			session.setAttribute("errorMessage", "Appointment Alreay exists");
-			return new ModelAndView("error","error",null);
+			return new ModelAndView("error", "error", null);
 		}
 		return new ModelAndView("add_success", "a", a);
 	}
-	
+
 	@RequestMapping(value = "/physician/add_vitals", method = RequestMethod.GET)
 	public ModelAndView addVitals(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		Patient u = (Patient) session.getAttribute("patient");
 		return new ModelAndView("add_vitals", "patient", u);
 	}
-	
+
 	@RequestMapping(value = "/physician/add_vitals", method = RequestMethod.POST)
 	public ModelAndView addnewVitals(HttpServletRequest request) {
 		HttpSession session = request.getSession();
@@ -104,4 +103,5 @@ public class AddDetailsController {
 		VitalHistory vi = physicianDAO.addVitals(v);
 		return new ModelAndView("add_success", "vi", vi);
 	}
+	
 }

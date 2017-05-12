@@ -1,7 +1,9 @@
 package com.edu.spring.pojo;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -15,9 +17,9 @@ public class AppointmentDetails {
 	private String appointmentDate;
 	private String reasonForVisit;
 	private String appointmentDesc;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REMOVE)
 	private Patient patient;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REMOVE)
 	private Physician physician;
 
 	public AppointmentDetails() {
@@ -34,7 +36,6 @@ public class AppointmentDetails {
 		this.patient = patient;
 	}
 
-	
 	public Physician getPhysician() {
 		return physician;
 	}

@@ -1,10 +1,15 @@
 package com.edu.spring.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
 import com.edu.spring.exception.LoginException;
 import com.edu.spring.pojo.LoginDetails;
+import com.edu.spring.pojo.Patient;
+import com.edu.spring.pojo.Physician;
 
 public class LoginDAO extends DAO {
 
@@ -42,6 +47,58 @@ public class LoginDAO extends DAO {
 			rollback();
 			throw new LoginException("could not add user" + username, e);
 		}
+	}
+
+	public List<Physician> getPhysician() {
+		begin();
+		Query q = getSession().createQuery("from Physician");
+		List<Physician> list = new ArrayList<Physician>();
+		list = q.list();
+		commit();
+		close();
+		return list;
+	}
+
+	public List<Patient> getPatient() {
+		begin();
+		Query q = getSession().createQuery("from Patient");
+		List<Patient> list = new ArrayList<Patient>();
+		list = q.list();
+		commit();
+		close();
+		return list;
+	}
+
+	public void deletePhysician(String uId) {
+		begin();
+		Physician p = new Physician();
+
+		p.setUId(Long.parseLong(uId));
+		getSession().delete(p);
+		commit();
+		close();
+	}
+
+	public void deletePatient(String uId) {
+		begin();
+		Patient p = new Patient();
+		p.setUId(Long.parseLong(uId));
+		getSession().delete(p);
+		commit();
+		close();
+
+	}
+
+	public List<Patient> getFamily(LoginDetails u) {
+		begin();
+		Query q = getSession().createQuery("from Patient where UId = :UId");
+		q.setLong("UId", u.getUId());
+		Patient p = (Patient) q.uniqueResult();
+		long id = p.getFamily().getFamilyid();
+		Query q1 = getSession().createQuery("from Patient where family_familyid = :id");
+		q1.setLong("id",id);
+		List<Patient> pList= q1.list();
+		return pList;
 	}
 
 }

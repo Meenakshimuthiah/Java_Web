@@ -50,10 +50,60 @@ footer {
 }
 </style>
 
+<script>
+	function validate() {
+		var p = document.forms["myForm"]["date"].value;
 
+		if (p == "") {
+			alert("Pleae enter date");
+			return false;
+		}
+
+	}
+</script>
+<script>
+   var xmlHttp;
+   xmlHttp = GetXmlHttpObject();
+   function selectRecord() {
+       
+       xmlHttp.onreadystatechange = function stateChanged(){
+           if(xmlHttp.readyState == 4){
+               
+               var x = document.getElementsByClassName("btn btn-info");
+               var i;
+               for (i = 0; i < x.length; i++) {
+                 x[i].disabled = "true";
+               }
+           }
+       };
+       xmlHttp.open("GET","AppointmentCheck",true);
+       xmlHttp.send();
+       return false;            
+   }
+   
+   function GetXmlHttpObject()
+   {
+       var xmlHttp = null;
+       try
+       {
+           // Firefox, Opera 8.0+, Safari
+           xmlHttp = new XMLHttpRequest();
+       } catch (e)
+       {
+           // Internet Explorer
+           try
+           {
+               xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+           } catch (e)
+           {
+               xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+           }
+       }
+       return xmlHttp;
+   }
+</script>
 </head>
 <body>
-
 	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 	<nav class="navbar navbar-inverse">
@@ -86,39 +136,21 @@ footer {
 					alt="img" width="180" height="430">
 			</div>
 			<div class="col-sm-8 text-left">
-				<form action="${contextPath}/physician/add_details"
-					onsubmit="return validate()" name="myForm" method="post">
-					<h1>Here are the search results</h1>
-					you searched for:
-					<c:out value="${query}" />
-					<table class="table table-striped">
-						<tr>
-							<td></td>
-							<td>UId</td>
-							<td>Username</td>
-							<td>Name</td>
-							<td>age</td>
-							<td>gender</td>
-							<td>location</td>
-							<td>contact</td>
-						</tr>
-						<c:forEach items="${patients}" var="dList">
-							<tr>
-								<td><input type="radio" name="patients"
-									value="${dList.UId}" /></td>
-								<td>${dList.UId}</td>
-								<td>${dList.username}</td>
-								<td>${dList.name}</td>
-								<td>${dList.age}</td>
-								<td>${dList.gender}</td>
-								<td>${dList.location}</td>
-								<td>${dList.contact}</td>
-							</tr>
-						</c:forEach>
-					</table>
-					<input type="submit" class="btn btn-info" value="Submit">
-				</form>
 
+				<h2>Search Appointment</h2>
+				
+				<form action="${contextPath}/patient/search_appointment"
+					onsubmit="return validate()" name="myForm" method="post">
+					<div class="row">
+						<label class="control-label col-sm-3" for="prog">Search
+							Query</label>
+						<div class="col-xs-2">
+							<input type="date" class="form-control" name="date">
+						</div>
+					</div>
+					<br /> <input type="submit" class="btn btn-info" value="Search" onclick="return dateValidation()">
+				</form>
+			
 			</div>
 			<div class="col-sm-2 sidenav">
 				<img
@@ -133,6 +165,5 @@ footer {
 	<footer class="container-fluid text-center">
 		<p>Footer Text</p>
 	</footer>
-
 </body>
 </html>
