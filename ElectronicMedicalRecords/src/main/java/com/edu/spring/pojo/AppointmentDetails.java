@@ -17,9 +17,9 @@ public class AppointmentDetails {
 	private String appointmentDate;
 	private String reasonForVisit;
 	private String appointmentDesc;
-	@ManyToOne(cascade = CascadeType.REMOVE)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	private Patient patient;
-	@ManyToOne(cascade = CascadeType.REMOVE)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	private Physician physician;
 
 	public AppointmentDetails() {

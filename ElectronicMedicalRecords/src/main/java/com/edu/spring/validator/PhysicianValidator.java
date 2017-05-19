@@ -14,6 +14,6 @@ public class PhysicianValidator implements Validator {
 
 	public void validate(Object obj, Errors errors) {
 		Physician newPhysician = (Physician) obj;
-
+		
 	}
 }

@@ -78,28 +78,4 @@ public class ViewDetailsController {
 	}
 	
 
-	@RequestMapping(value = "/patient/select_patient", method = RequestMethod.POST)
-	public String selectPatient(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		String id = request.getParameter("pList");
-		Patient p = patientDAO.getPatient(id);
-		session.setAttribute("p", p);
-		return "search_appt";
-	}
-	
-	@RequestMapping(value="/AppointmentCheck",method = RequestMethod.POST)
-	public void checkAppointment(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		String query = request.getParameter("date");
-		AppointmentDetails p;
-		try {
-			p = patientDAO.checkAppointment(query);
-			session.setAttribute("appointment", p);
-			
-		} catch (AdminException e) {
-			System.out.println("Exception: " + e.getMessage());
-			session.setAttribute("errorMessage", "Appointment Does not exists");
-			
-		}
-	}
 }

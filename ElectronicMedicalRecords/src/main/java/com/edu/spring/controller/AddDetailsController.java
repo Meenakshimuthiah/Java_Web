@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.edu.spring.dao.PhysicianDAO;
@@ -25,11 +26,16 @@ public class AddDetailsController {
 	PhysicianDAO physicianDAO;
 
 	@RequestMapping(value = "/physician/search_patient", method = RequestMethod.GET)
-	public ModelAndView searchPatient(HttpServletRequest request) {
+	public String searchPatient(HttpServletRequest request) {
+		HttpSession session = request.getSession();
 		List<Patient> patients = new ArrayList<Patient>();
 		String query = request.getParameter("query");
 		patients = physicianDAO.searchPatient(query);
-		return new ModelAndView("patient_results", "patients", patients);
+		if(patients.size()==0){
+			return "physician_home";
+		}
+		session.setAttribute("patients", patients);
+		return "patient_results";
 	}
 
 	@RequestMapping(value = "/physician/add_details", method = RequestMethod.POST)
@@ -103,5 +109,22 @@ public class AddDetailsController {
 		VitalHistory vi = physicianDAO.addVitals(v);
 		return new ModelAndView("add_success", "vi", vi);
 	}
+	@RequestMapping(value = "/physician/checkPatient", method = RequestMethod.GET)
+	public @ResponseBody String checkPatient(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		System.out.println("inside check patient");
+		List<Patient> patients = new ArrayList<Patient>();
+		String query = request.getParameter("query");
+		patients = physicianDAO.searchPatient(query);
+		if(patients.size()!=0){
+			session.setAttribute("pat", null);
+			return patients.size()+"users found";
+		}
+		else{
+		session.setAttribute("pat", patients);
+		return "no user found";
+		}
+	}
+	
 	
 }

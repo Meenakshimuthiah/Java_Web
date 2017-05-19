@@ -13,6 +13,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <style>
 .navbar {
 	margin-bottom: 0;
@@ -49,8 +50,22 @@ footer {
 	}
 }
 </style>
+<script>
+	function doAjaxPost() {
+		var query = $('#query').val();
+		var data = 'query=' + encodeURIComponent(query);
+		$.ajax({
+			url : '${contextPath}/physician/checkPatient',
+			data : data,
+			type : "GET",
 
-
+			success : function(response) {
+				alert(response);
+			}
+		});
+		return false;
+	};
+</script>
 </head>
 <body>
 	<c:set var="contextPath" value="${pageContext.request.contextPath}" />
@@ -86,17 +101,29 @@ footer {
 			</div>
 			<div class="col-sm-8 text-left">
 				<h2>Search Patient</h2>
+				<%
+					HttpSession session1 = request.getSession();
+					if (session1.getAttribute("pat") == null) {
+				%>
+				<p>No users found</p>
+				<%
+					} else {
+				%>
 				<form action="${contextPath}/physician/search_patient"
-					onsubmit="return validate()" name="myForm">
+					onsubmit="return validate()" name="myForm" id="sampleForm">
 					<div class="row">
 						<label class="control-label col-sm-3" for="prog">Search
 							Query</label>
 						<div class="col-xs-2">
-							<input type="text" class="form-control" id="prog" name="query">
+							<input type="text" class="form-control" id="query" name="query">
 						</div>
 					</div>
-					<br /> <input type="submit" class="btn btn-info" value="Search">
+					<br /> <input type="submit" class="btn btn-info" value="Search"
+						onclick="doAjaxPost()">
 				</form>
+				<%
+					}
+				%>
 			</div>
 			<div class="col-sm-2 sidenav">
 				<img

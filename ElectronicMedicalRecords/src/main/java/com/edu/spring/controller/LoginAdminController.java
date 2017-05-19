@@ -51,6 +51,7 @@ public class LoginAdminController {
 				}
 				if (u.getRole().equalsIgnoreCase("Physician")) {
 					session.setAttribute("user", u);
+					session.setAttribute("pat", u);
 					return "physician_home";
 				}
 				if (u.getRole().equalsIgnoreCase("Patient")) {

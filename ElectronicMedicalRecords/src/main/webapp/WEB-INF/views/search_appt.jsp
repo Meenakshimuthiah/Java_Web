@@ -50,57 +50,7 @@ footer {
 }
 </style>
 
-<script>
-	function validate() {
-		var p = document.forms["myForm"]["date"].value;
 
-		if (p == "") {
-			alert("Pleae enter date");
-			return false;
-		}
-
-	}
-</script>
-<script>
-   var xmlHttp;
-   xmlHttp = GetXmlHttpObject();
-   function selectRecord() {
-       
-       xmlHttp.onreadystatechange = function stateChanged(){
-           if(xmlHttp.readyState == 4){
-               
-               var x = document.getElementsByClassName("btn btn-info");
-               var i;
-               for (i = 0; i < x.length; i++) {
-                 x[i].disabled = "true";
-               }
-           }
-       };
-       xmlHttp.open("GET","AppointmentCheck",true);
-       xmlHttp.send();
-       return false;            
-   }
-   
-   function GetXmlHttpObject()
-   {
-       var xmlHttp = null;
-       try
-       {
-           // Firefox, Opera 8.0+, Safari
-           xmlHttp = new XMLHttpRequest();
-       } catch (e)
-       {
-           // Internet Explorer
-           try
-           {
-               xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-           } catch (e)
-           {
-               xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-           }
-       }
-       return xmlHttp;
-   }
 </script>
 </head>
 <body>
@@ -146,9 +96,11 @@ footer {
 							Query</label>
 						<div class="col-xs-2">
 							<input type="date" class="form-control" name="date">
+							 <span id="err"> </span>
+							 
 						</div>
 					</div>
-					<br /> <input type="submit" class="btn btn-info" value="Search" onclick="return dateValidation()">
+					<br /> <input type="submit" class="btn btn-info" value="Search">
 				</form>
 			
 			</div>
